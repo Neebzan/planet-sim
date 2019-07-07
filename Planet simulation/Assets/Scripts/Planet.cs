@@ -7,14 +7,13 @@ using UnityEngine.UI;
 public class Planet : MonoBehaviour {
     [HideInInspector]
     public Rigidbody rb;
-    public float size;
-    public float planetConsumeRatio = 1f;
-    public static EventHandler planetsMerged;
     [HideInInspector]
     public Transform tx;
+    public static EventHandler planetsMerged;
     private ParticleSystem [ ] particleSystems;
     private TrailRenderer trail;
     private Vector3 currentVelocity;
+    public float radius;
     public float timeToOrbit;
     public Text uiText;
 
@@ -37,12 +36,8 @@ public class Planet : MonoBehaviour {
 
     private void Start ()
     {
-        AudioSource source = GetComponent<AudioSource>();
-        source.volume = size;
-        source.maxDistance *= size;
-
         foreach (var particleSystem in particleSystems)
-            particleSystem.gameObject.transform.localScale = new Vector3(size * 0.05f, size * 0.05f, size * 0.05f);
+            particleSystem.gameObject.transform.localScale = new Vector3(radius * 0.05f, radius * 0.05f, radius * 0.05f);
 
         if (uiText != null)
         {
@@ -87,24 +82,24 @@ public class Planet : MonoBehaviour {
     {
         GameObject otherObject = collision.gameObject;
         float otherMass = otherObject.GetComponent<Rigidbody>().mass;
+        Planet otherPlanet = otherObject.GetComponent<Planet>();
         if (otherMass < rb.mass)
         {
-            transform.localScale = new Vector3(
-                transform.localScale.x + otherObject.transform.localScale.x * planetConsumeRatio,
-                transform.localScale.y + otherObject.transform.localScale.y * planetConsumeRatio,
-                transform.localScale.z + otherObject.transform.localScale.z * planetConsumeRatio);
+            //Calculate new values
+            float newVolume = GetVolume(radius) + GetVolume(otherPlanet.radius);
+            float newRadius = GetRadiusFromVolume(newVolume);
+            float newDiameter = newRadius * 2.0f;
 
-            rb.mass += otherMass * planetConsumeRatio;
-            size += otherObject.GetComponent<Planet>().size * planetConsumeRatio;
+            //Set values
+            transform.localScale = new Vector3(newDiameter, newDiameter, newDiameter);
+            rb.mass += otherMass;
+            radius = newRadius;
 
-            SetColor(planetSpawner.maximumSize, planetSpawner.minimumSize, size, planetSpawner.gradient, 0.1f);
-
+            SetColor(planetSpawner.maximumSize, planetSpawner.minimumSize, radius, planetSpawner.gradient, 0.1f);
             foreach (var particleSystem in particleSystems)
-                particleSystem.gameObject.transform.localScale = new Vector3(size * 0.05f, size * 0.05f, size * 0.05f);
-
+                particleSystem.gameObject.transform.localScale = new Vector3(radius * 0.05f, radius * 0.05f, radius * 0.05f);
 
             GameObject.Destroy(collision.gameObject);
-
             OnPlanetsMerged();
         }
     }
@@ -123,5 +118,25 @@ public class Planet : MonoBehaviour {
     {
         if (tx != null)
             Gizmos.DrawLine(tx.position, tx.position + currentVelocity);
+    }
+
+    /// <summary>
+    /// Returns volume of a sphere in terms of radius
+    /// </summary>
+    /// <param name="radius"></param>
+    /// <returns></returns>
+    static float GetVolume (float radius)
+    {
+        return (4.0f / 3.0f) * Mathf.PI * Mathf.Pow(radius, 3.0f);
+    }
+
+    /// <summary>
+    /// Returns radius of sphere in terms of volume
+    /// </summary>
+    /// <param name="volume"></param>
+    /// <returns></returns>
+    static float GetRadiusFromVolume (float volume)
+    {
+        return Mathf.Pow((3.0f * volume) / (4.0f * Mathf.PI), 1.0f / 3.0f);
     }
 }

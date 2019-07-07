@@ -80,7 +80,7 @@ public class PlanetSpawner : MonoBehaviour {
                 }
             }
         }
-        SetUIText();
+        UpdateuI();
     }
 
     void SetupSolarSystem (float scaleFactor)
@@ -174,25 +174,25 @@ public class PlanetSpawner : MonoBehaviour {
         }
         float orbitalVelocity = Mathf.Sqrt((gravitationConstant * centerOfOrbit.rb.mass) / distanceBetween);
         orbitingPlanet.rb.velocity = orbitalVelocityDirection * orbitalVelocity + centerOfOrbit.rb.velocity;
-        orbitingPlanet.tx.LookAt(orbitingPlanet.tx.position + centerOfOrbit.tx.forward * (orbitingPlanet.size + 100));
+        orbitingPlanet.tx.LookAt(orbitingPlanet.tx.position + centerOfOrbit.tx.forward * (orbitingPlanet.radius + 100));
         orbitingPlanet.timeToOrbit = ((2 * Mathf.PI * distanceBetween) / orbitalVelocity) / 60;
     }
 
-    void SetupPlanet (float size)
+    void SetupPlanet (float diameter)
     {
         var planet = Instantiate(planetPrefab);
         var controller = planet.GetComponent<Planet>();
 
-        controller.size = size;
+        controller.radius = diameter * 0.5f;
 
         planet.transform.localPosition = new Vector3(
             transform.localPosition.x + UnityEngine.Random.Range(-maximumSpawnRadius, maximumSpawnRadius),
             transform.localPosition.y + UnityEngine.Random.Range(-maximumSpawnRadius, maximumSpawnRadius),
             transform.localPosition.z + UnityEngine.Random.Range(-maximumSpawnRadius, maximumSpawnRadius));
-        planet.transform.localScale = new Vector3(size, size, size);
-        planet.GetComponent<Rigidbody>().mass *= size * 20;
+        planet.transform.localScale = new Vector3(diameter, diameter, diameter);
+        planet.GetComponent<Rigidbody>().mass *= diameter * 20;
 
-        controller.SetColor(maximumSize, minimumSize, size, gradient, 0.5f);
+        controller.SetColor(maximumSize, minimumSize, diameter, gradient, 0.5f);
 
 
         Vector3 randomStartForceDirection = new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f));
@@ -205,7 +205,7 @@ public class PlanetSpawner : MonoBehaviour {
         var planet = Instantiate(planetPrefab);
         var controller = planet.GetComponent<Planet>();
 
-        controller.size = size;
+        controller.radius = size;
         planet.transform.localScale = new Vector3(size, size, size);
         planet.GetComponent<Rigidbody>().mass = mass;
         controller.tx.position = position;
@@ -217,13 +217,18 @@ public class PlanetSpawner : MonoBehaviour {
     public void OnPlanetsMerged (object sender, EventArgs e)
     {
         merges++;
-        SetUIText();
+        UpdateuI();
     }
 
-    void SetUIText ()
+    void UpdateuI ()
     {
-        uiText.text = $"Planets : { planets.Count.ToString()}\nMerges : {merges.ToString()}";
+        uiText.text =
+            $"Planets : { planets.Count.ToString()}\n" +
+            $"Merges : {merges.ToString()}\n" +
+            $"gravitation constant : {gravitationConstant}";
     }
+
+
 
     private void DefineColorGradient ()
     {
@@ -241,6 +246,37 @@ public class PlanetSpawner : MonoBehaviour {
         gak [ 1 ].alpha = 1f;
         gak [ 1 ].time = 1f;
         gradient.SetKeys(gck, gak);
+    }
+
+    void Update ()
+    {
+        if (Input.GetKey(KeyCode.P))
+        {
+            float size = UnityEngine.Random.Range(minimumSize, maximumSize);
+            SetupPlanet(size);
+            UpdateuI();
+        }
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            gravitationConstant += gravitationConstant * Time.deltaTime;
+            UpdateuI();
+        }
+        else if (Input.GetKey(KeyCode.DownArrow))
+        {
+            gravitationConstant -= gravitationConstant * Time.deltaTime;
+            UpdateuI();
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Restart();
+        }
+    }
+
+    private void Restart ()
+    {
+        for (int i = planets.Count - 1; i >= 0; i--)
+            Destroy(planets [ i ].gameObject);
+        Start();
     }
 
     // Update is called once per frame

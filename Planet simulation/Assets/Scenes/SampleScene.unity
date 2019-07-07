@@ -278,7 +278,7 @@ MonoBehaviour:
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
+    m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 'Planets : 100
@@ -532,32 +532,32 @@ PrefabInstance:
     - target: {fileID: 365037247519127975, guid: 0b7c5a82d27dcab4a846dc47dbb1f520,
         type: 3}
       propertyPath: gravitationConstant
-      value: 0.1
+      value: 686.19
       objectReference: {fileID: 0}
     - target: {fileID: 365037247519127975, guid: 0b7c5a82d27dcab4a846dc47dbb1f520,
         type: 3}
       propertyPath: planetsToSpawn
-      value: 200
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 365037247519127975, guid: 0b7c5a82d27dcab4a846dc47dbb1f520,
         type: 3}
       propertyPath: maximumSize
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 365037247519127975, guid: 0b7c5a82d27dcab4a846dc47dbb1f520,
         type: 3}
       propertyPath: maximumSpawnRadius
-      value: 1500
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 365037247519127975, guid: 0b7c5a82d27dcab4a846dc47dbb1f520,
         type: 3}
       propertyPath: enablePresetOrbit
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 365037247519127975, guid: 0b7c5a82d27dcab4a846dc47dbb1f520,
         type: 3}
       propertyPath: scaleFactor
-      value: 0.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 365037247519127975, guid: 0b7c5a82d27dcab4a846dc47dbb1f520,
         type: 3}
@@ -567,7 +567,7 @@ PrefabInstance:
     - target: {fileID: 365037247519127975, guid: 0b7c5a82d27dcab4a846dc47dbb1f520,
         type: 3}
       propertyPath: enableRandomSpawns
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b7c5a82d27dcab4a846dc47dbb1f520, type: 3}
@@ -596,7 +596,7 @@ PrefabInstance:
     - target: {fileID: 5900400292044178120, guid: 2ecc5a2a71910e24595f5de968c0888a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 852.5
       objectReference: {fileID: 0}
     - target: {fileID: 5900400292044178120, guid: 2ecc5a2a71910e24595f5de968c0888a,
         type: 3}
@@ -606,7 +606,7 @@ PrefabInstance:
     - target: {fileID: 5900400292044178120, guid: 2ecc5a2a71910e24595f5de968c0888a,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.9848078
       objectReference: {fileID: 0}
     - target: {fileID: 5900400292044178120, guid: 2ecc5a2a71910e24595f5de968c0888a,
         type: 3}
@@ -616,7 +616,7 @@ PrefabInstance:
     - target: {fileID: 5900400292044178120, guid: 2ecc5a2a71910e24595f5de968c0888a,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.17364825
       objectReference: {fileID: 0}
     - target: {fileID: 5900400292044178120, guid: 2ecc5a2a71910e24595f5de968c0888a,
         type: 3}
@@ -631,7 +631,7 @@ PrefabInstance:
     - target: {fileID: 5900400292044178120, guid: 2ecc5a2a71910e24595f5de968c0888a,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -160
       objectReference: {fileID: 0}
     - target: {fileID: 5900400292044178120, guid: 2ecc5a2a71910e24595f5de968c0888a,
         type: 3}
