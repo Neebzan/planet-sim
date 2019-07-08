@@ -532,17 +532,17 @@ PrefabInstance:
     - target: {fileID: 365037247519127975, guid: 0b7c5a82d27dcab4a846dc47dbb1f520,
         type: 3}
       propertyPath: gravitationConstant
-      value: 686.19
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 365037247519127975, guid: 0b7c5a82d27dcab4a846dc47dbb1f520,
         type: 3}
       propertyPath: planetsToSpawn
-      value: 250
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 365037247519127975, guid: 0b7c5a82d27dcab4a846dc47dbb1f520,
         type: 3}
       propertyPath: maximumSize
-      value: 4
+      value: 6.18
       objectReference: {fileID: 0}
     - target: {fileID: 365037247519127975, guid: 0b7c5a82d27dcab4a846dc47dbb1f520,
         type: 3}
@@ -552,12 +552,12 @@ PrefabInstance:
     - target: {fileID: 365037247519127975, guid: 0b7c5a82d27dcab4a846dc47dbb1f520,
         type: 3}
       propertyPath: enablePresetOrbit
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 365037247519127975, guid: 0b7c5a82d27dcab4a846dc47dbb1f520,
         type: 3}
       propertyPath: scaleFactor
-      value: 1
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 365037247519127975, guid: 0b7c5a82d27dcab4a846dc47dbb1f520,
         type: 3}

@@ -16,6 +16,8 @@ public class Planet : MonoBehaviour {
     public float radius;
     public float timeToOrbit;
     public Text uiText;
+    public static bool ToggleUI = false;
+
 
     Material material;
     PlanetSpawner planetSpawner;
@@ -48,6 +50,7 @@ public class Planet : MonoBehaviour {
                 uiText.text = "";
         }
     }
+
 
     public void SetColor (float maxSize, float minSize, float size, Gradient gradient, float colourMultiplier)
     {
@@ -112,6 +115,16 @@ public class Planet : MonoBehaviour {
     private void Update ()
     {
         currentVelocity = rb.velocity;
+        if (ToggleUI)
+            UpdateUI();
+    }
+
+    void UpdateUI ()
+    {
+        Debug.Log("updating ui");
+        uiText.text =
+           $"Radius : {radius}" + $"  Mass : {rb.mass}\n" +
+           $"Speed : {rb.velocity.magnitude}";
     }
 
     private void OnDrawGizmos ()
@@ -139,4 +152,6 @@ public class Planet : MonoBehaviour {
     {
         return Mathf.Pow((3.0f * volume) / (4.0f * Mathf.PI), 1.0f / 3.0f);
     }
+
+
 }

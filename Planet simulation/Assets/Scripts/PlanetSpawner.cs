@@ -18,6 +18,7 @@ public class PlanetSpawner : MonoBehaviour {
 
     public GameObject planetPrefab;
     public List<Planet> planets;
+    CameraController camController;
     public float gravitationConstant = 0.000557408f;
     public Gradient gradient;
     private Vector3 forceDirection;
@@ -65,7 +66,10 @@ public class PlanetSpawner : MonoBehaviour {
 
     private void Start ()
     {
+        camController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
         Planet.planetsMerged += OnPlanetsMerged;
+        CameraController.speedChanged += OnSpeedChanged;
+        CameraController.uiToggled += OnUIToggled;
 
         DefineColorGradient();
         if (planetPrefab != null)
@@ -81,6 +85,19 @@ public class PlanetSpawner : MonoBehaviour {
             }
         }
         UpdateuI();
+    }
+
+    private void OnUIToggled (object sender, EventArgs e)
+    {
+        if (Planet.ToggleUI)
+        {
+            uiText.text = "";
+            Planet.ToggleUI = false;
+        }
+        else
+        {
+            Planet.ToggleUI = true;
+        }
     }
 
     void SetupSolarSystem (float scaleFactor)
@@ -219,13 +236,19 @@ public class PlanetSpawner : MonoBehaviour {
         merges++;
         UpdateuI();
     }
+    private void OnSpeedChanged (object sender, EventArgs e)
+    {
+        UpdateuI();
+    }
 
     void UpdateuI ()
     {
+
         uiText.text =
             $"Planets : { planets.Count.ToString()}\n" +
             $"Merges : {merges.ToString()}\n" +
-            $"gravitation constant : {gravitationConstant}";
+            $"gravitation constant : {gravitationConstant}\n" +
+            $"current move speed : {camController.mainSpeed}";
     }
 
 
@@ -276,6 +299,8 @@ public class PlanetSpawner : MonoBehaviour {
     {
         for (int i = planets.Count - 1; i >= 0; i--)
             Destroy(planets [ i ].gameObject);
+
+        merges = 0;
         Start();
     }
 

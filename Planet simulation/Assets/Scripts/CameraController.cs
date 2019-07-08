@@ -1,15 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraController : MonoBehaviour
-{
-    float mainSpeed = 100.0f; //regular speed
+public class CameraController : MonoBehaviour {
+    public float mainSpeed = 100.0f; //regular speed
     float shiftAdd = 250.0f; //multiplied by how long shift is held.  Basically running
-    float maxShift = 1000.0f; //Maximum speed when holdin gshift
     float camSens = 0.25f; //How sensitive it with mouse
     private Vector3 lastMouse = new Vector3(255, 255, 255); //kind of in the middle of the screen, rather than at the top (play)
     private float totalRun = 1.0f;
+    public static EventHandler speedChanged;
+    public static EventHandler uiToggled;
 
     private void Start ()
     {
@@ -34,9 +35,6 @@ public class CameraController : MonoBehaviour
         {
             totalRun += Time.deltaTime;
             p = p * totalRun * shiftAdd;
-            p.x = Mathf.Clamp(p.x, -maxShift, maxShift);
-            p.y = Mathf.Clamp(p.y, -maxShift, maxShift);
-            p.z = Mathf.Clamp(p.z, -maxShift, maxShift);
         }
         else
         {
@@ -91,17 +89,33 @@ public class CameraController : MonoBehaviour
         {
             p_Velocity += new Vector3(0, -1, 0);
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetAxis("Mouse ScrollWheel") > 0)
         {
             mainSpeed += mainSpeed * 0.25f;
-            maxShift = mainSpeed * 2;
+            shiftAdd = mainSpeed * 2;
+            OnSpeedChanged();
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetAxis("Mouse ScrollWheel") < 0)
         {
-            mainSpeed = mainSpeed * 0.25f;
-            maxShift = mainSpeed * 2;
+            mainSpeed -= mainSpeed * 0.25f;
+            shiftAdd = mainSpeed * 2;
+            OnSpeedChanged();
         }
+        if (Input.GetKeyDown(KeyCode.U))
+            OnUIToggled();
+
+
         return p_Velocity;
+    }
+
+    protected virtual void OnSpeedChanged ()
+    {
+        speedChanged(this, new EventArgs());
+    }
+
+    protected virtual void OnUIToggled ()
+    {
+        uiToggled(this, new EventArgs());
     }
 
     public static void Quit ()
